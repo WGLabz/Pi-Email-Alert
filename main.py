@@ -9,8 +9,21 @@ IMAP_ADDRESS='imap.gmail.com'
 EMAIL_ID='your_id@gmail.com'#Replace with your Email ID
 PASSWORD='your_pwd' #Replace your Email Password
 sense = SenseHat()
-red = (255, 0, 0) # Change this for notification color.
 
+X = [255, 0, 0]  # Red
+O = [0, 0, 0]  # off
+
+email_icon = [  ## Change this for notification color.
+O, O, O, O, O, O, O, O,
+X, X, X, X, X, X, X, X,
+X, X, O, O, O, O, X, X,
+X, O, X, O, O, X, O, X,
+X, O, O, X, X, O, O, X,
+X, O, O, O, O, O, O, X,
+X, X, X, X, X, X, X, X,
+O, O, O, O, O, O, O, O
+]
+#sense.set_pixels(email_icon)
 # Function to read email inbox
 def read_email():
   try:
@@ -32,7 +45,7 @@ def read_email():
       for response_part in data:
         if isinstance(response_part, tuple):
          msg = email.message_from_string(response_part[1])
-        print msg['from']
+        #print msg['from']
         try:
           try:
             time_delta=(datetime.datetime.now()-datetime.datetime.strptime(msg['date'][0:25],'%a, %d %b %Y %H:%M:%S')).total_seconds()#Email date format Mon, 19 Feb 2018 23:34:11 -0800 (PST) or
@@ -53,7 +66,7 @@ def glow_led(sender,subject):
   print 'New message is about to get notified from '+sender
   i=0
   for i in range(0,10): #Blink the LEDs for 10 times
-    sense.clear(red)
+    sense.set_pixels(email_icon)
     time.sleep(1)
     sense.clear()
     time.sleep(0.5)
